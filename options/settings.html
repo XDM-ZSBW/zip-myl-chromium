@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Myl.Zip Settings</title>
+  <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+  <div class="myl-zip-settings">
+    <!-- Header -->
+    <div class="settings-header">
+      <div class="header-content">
+        <div class="logo">
+          <div class="logo-icon">🧠</div>
+          <div class="logo-text">
+            <h1>Myl.Zip</h1>
+            <p>Setup & Configuration</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <a href="thoughts.html" class="nav-button">📝 Thoughts</a>
+          <a href="popup.html" class="nav-button">🏠 Home</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Setup Wizard Progress -->
+    <div class="setup-wizard" id="setupWizard">
+      <div class="wizard-header">
+        <h2>🚀 Setup Wizard</h2>
+        <p>Follow these steps to get Myl.Zip working securely</p>
+      </div>
+      
+      <div class="wizard-progress">
+        <div class="wizard-step active" data-step="1">
+          <div class="step-indicator">
+            <span class="step-number">1</span>
+            <span class="step-icon">🔗</span>
+          </div>
+          <div class="step-info">
+            <h3>Connect</h3>
+            <p>Connect to backend service</p>
+          </div>
+        </div>
+        
+        <div class="wizard-step" data-step="2">
+          <div class="step-indicator">
+            <span class="step-number">2</span>
+            <span class="step-icon">🔒</span>
+          </div>
+          <div class="step-info">
+            <h3>Secure</h3>
+            <p>Setup encryption & device registration</p>
+          </div>
+        </div>
+        
+        <div class="wizard-step" data-step="3">
+          <div class="step-indicator">
+            <span class="step-number">3</span>
+            <span class="step-icon">📱</span>
+          </div>
+          <div class="step-info">
+            <h3>Pair</h3>
+            <p>Connect with other devices</p>
+          </div>
+        </div>
+        
+        <div class="wizard-step" data-step="4">
+          <div class="step-indicator">
+            <span class="step-number">4</span>
+            <span class="step-icon">✅</span>
+          </div>
+          <div class="step-info">
+            <h3>Complete</h3>
+            <p>Ready to use!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Content -->
+    <div class="settings-content">
+      <!-- Step 1: Backend Connection -->
+      <div class="settings-section active" id="step1Section">
+        <div class="section-header">
+          <h2>🔗 Step 1: Connect to Backend</h2>
+          <p>Connect Myl.Zip to the backend service for secure data storage and device synchronization</p>
+        </div>
+        
+        <div class="setting-group">
+          <label for="backendURL">Backend URL</label>
+          <div class="input-group">
+            <input type="url" id="backendURL" placeholder="https://api.myl.zip" />
+            <button type="button" id="testConnection" class="btn-primary">Test Connection</button>
+          </div>
+          <p class="setting-description">The URL of your Myl.Zip backend service</p>
+          
+          <label for="enableBackendSync">Enable Backend Sync</label>
+          <div class="toggle-container">
+            <input type="checkbox" id="enableBackendSync" checked />
+            <span class="toggle-slider"></span>
+          </div>
+          <p class="setting-description">Synchronize data with the backend service</p>
+          
+          <label for="authToken">Authentication Token</label>
+          <div class="input-group">
+            <input type="password" id="authToken" placeholder="Enter your authentication token" />
+            <button type="button" id="clearAuth" class="btn-secondary">Clear</button>
+          </div>
+          <p class="setting-description">Token for authenticating with the backend service</p>
+        </div>
+
+        <div class="connection-test-results" id="connectionTestResults">
+          <div class="test-item">
+            <span class="test-label">🔍 Connection:</span>
+            <span class="test-status" id="connectionStatus">Not tested</span>
+          </div>
+          <div class="test-item">
+            <span class="test-label">🔐 Security:</span>
+            <span class="test-status" id="securityStatus">Not tested</span>
+          </div>
+          <div class="test-item">
+            <span class="test-label">📡 API:</span>
+            <span class="test-status" id="apiStatus">Not tested</span>
+          </div>
+        </div>
+        
+        <div class="connection-status-display">
+          <div class="status-indicator" id="statusIndicator"></div>
+          <span class="status-text" id="statusText">Not connected</span>
+        </div>
+
+        <div class="step-actions">
+          <button type="button" id="saveBackendSettings" class="btn-primary">Save & Continue</button>
+          <button type="button" id="skipBackend" class="btn-secondary">Skip for Now</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Security Setup -->
+      <div class="settings-section" id="step2Section">
+        <div class="section-header">
+          <h2>🔒 Step 2: Setup Security</h2>
+          <p>Secure your data with encryption and register this device for secure communication</p>
+        </div>
+        
+        <div class="setting-group">
+          <h3>Device Registration</h3>
+          <div class="registration-status" id="registrationStatus">
+            <span class="status-label">Status:</span>
+            <span class="status-value" id="registrationStatusValue">Not registered</span>
+          </div>
+          <p class="setting-description">Register this device to enable secure communication and device pairing</p>
+          <div class="registration-actions">
+            <button type="button" id="registerDevice" class="btn-primary">Register This Device</button>
+            <button type="button" id="refreshRegistration" class="btn-secondary">Refresh Status</button>
+            <button type="button" id="createSelfTrust" class="btn-secondary">Create Self-Trust</button>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <h3>Encryption Setup</h3>
+          <div class="encryption-status">
+            <div class="status-item">
+              <span class="status-label">Encryption:</span>
+              <span class="status-indicator" id="encryptionStatus">Not setup</span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">Key Generation:</span>
+              <span class="status-indicator" id="keyStatus">Not generated</span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">Device Registration:</span>
+              <span class="status-indicator" id="deviceRegistrationStatus">Not registered</span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">Trusted Devices:</span>
+              <span class="status-indicator" id="trustedDevicesCount">0</span>
+            </div>
+          </div>
+          <p class="setting-description">Setup encryption to secure your thoughts and data</p>
+          <button type="button" id="setupEncryption" class="btn-primary">Setup Encryption</button>
+        </div>
+
+        <div class="step-actions">
+          <button type="button" id="continueToPairing" class="btn-primary">Continue to Pairing</button>
+          <button type="button" id="backToConnection" class="btn-secondary">← Back</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Device Pairing -->
+      <div class="settings-section" id="step3Section">
+        <div class="section-header">
+          <h2>📱 Step 3: Connect Devices</h2>
+          <p>Pair with other devices to share thoughts and data securely across your ecosystem</p>
+        </div>
+        
+        <div class="setting-group">
+          <h3>Generate Pairing Code</h3>
+          <div class="pairing-section">
+            <div class="pairing-controls">
+              <div class="format-selector">
+                <label for="pairing-format">Code Format:</label>
+                <select id="pairing-format">
+                  <option value="nft">NFT Token (Recommended)</option>
+                  <option value="uuid">UUID (Most Secure)</option>
+                  <option value="short">Short Code (Compact)</option>
+                </select>
+              </div>
+              
+              <button type="button" id="generatePairingCode" class="btn-primary">
+                Generate Pairing Code
+              </button>
+            </div>
+
+            <!-- Pairing Code Generation Status Indicator -->
+            <div id="pairing-generation-status" class="generation-status hidden">
+              <div class="status-header">
+                <span class="status-icon">⏳</span>
+                <span class="status-title">Generation Status</span>
+              </div>
+              
+              <div class="status-content">
+                <div class="status-message" id="status-message">
+                  Ready to generate
+                </div>
+                
+                <div class="status-progress" id="status-progress">
+                  <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                  </div>
+                  <div class="progress-text" id="progress-text">0%</div>
+                </div>
+                
+                <div class="status-details" id="status-details">
+                  <div class="detail-row">
+                    <span class="detail-label">Format:</span>
+                    <span class="detail-value" id="generation-format">-</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Time Elapsed:</span>
+                    <span class="detail-value" id="time-elapsed">-</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Estimated:</span>
+                    <span class="detail-value" id="estimated-time">-</span>
+                  </div>
+                </div>
+                
+                <div class="status-actions" id="status-actions">
+                  <button id="cancel-generation-btn" class="btn-secondary">Cancel</button>
+                  <button id="retry-generation-btn" class="btn-primary hidden">Retry</button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="pairing-code-section">
+              <label for="pairingCodeDisplay">Your Pairing Code:</label>
+              <div class="pairing-code-display">
+                <input type="text" id="pairingCodeDisplay" readonly placeholder="Click 'Generate' to create a pairing code" />
+                <button type="button" id="copyPairingCode" class="btn-secondary">Copy</button>
+              </div>
+              <div class="pairing-code-info">
+                <span class="format-indicator" id="pairingCodeFormat">Format: Not generated</span>
+              </div>
+              <p class="setting-description">Share this code with other devices to establish trust</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <h3>Connect to Other Device</h3>
+          <div class="pairing-verify-section">
+            <label for="pairingCodeInput">Enter Pairing Code:</label>
+            <div class="pairing-code-input">
+              <input type="text" id="pairingCodeInput" placeholder="Enter pairing code from another device" />
+              <button type="button" id="verifyPairingCode" class="btn-primary">Connect & Trust</button>
+            </div>
+            <p class="setting-description">Enter a pairing code from another device to establish trust</p>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <h3>Trusted Devices</h3>
+          <div class="trusted-devices-list" id="trustedDevicesList">
+            <div class="no-devices">No trusted devices found</div>
+          </div>
+          <div class="device-actions">
+            <button type="button" id="refreshDevices" class="btn-secondary">Refresh List</button>
+            <button type="button" id="manageDevices" class="btn-secondary">Manage Devices</button>
+          </div>
+        </div>
+
+        <div class="step-actions">
+          <button type="button" id="completeSetup" class="btn-primary">Complete Setup</button>
+          <button type="button" id="backToSecurity" class="btn-secondary">← Back</button>
+        </div>
+      </div>
+
+      <!-- Step 4: Setup Complete -->
+      <div class="settings-section" id="step4Section">
+        <div class="section-header">
+          <h2>✅ Step 4: Setup Complete!</h2>
+          <p>Congratulations! Myl.Zip is now configured and ready to use securely</p>
+        </div>
+        
+        <div class="completion-summary">
+          <div class="completion-item">
+            <span class="completion-icon">🔗</span>
+            <span class="completion-text">Backend connected and secure</span>
+          </div>
+          <div class="completion-item">
+            <span class="completion-icon">🔒</span>
+            <span class="completion-text">Encryption enabled and keys generated</span>
+          </div>
+          <div class="completion-item">
+            <span class="completion-icon">📱</span>
+            <span class="completion-text">Device registered and ready for pairing</span>
+          </div>
+          <div class="completion-item">
+            <span class="completion-icon">🎯</span>
+            <span class="completion-text">Ready to capture and secure your thoughts</span>
+          </div>
+        </div>
+
+        <div class="next-steps">
+          <h3>What's Next?</h3>
+          <ul>
+            <li><strong>Start Typing:</strong> Begin capturing your thoughts - they'll be automatically encrypted</li>
+            <li><strong>Pair More Devices:</strong> Connect additional devices to share thoughts securely</li>
+            <li><strong>Customize Settings:</strong> Adjust preferences in the settings panel</li>
+            <li><strong>View Thoughts:</strong> Access your encrypted thought history</li>
+          </ul>
+        </div>
+
+        <div class="step-actions">
+          <button type="button" id="startUsing" class="btn-primary">Start Using Myl.Zip</button>
+          <button type="button" id="openThoughts" class="btn-secondary">View Thoughts</button>
+        </div>
+      </div>
+
+      <!-- Advanced Settings (Collapsible) -->
+      <div class="settings-section advanced-section">
+        <div class="section-header collapsible" id="advancedHeader">
+          <h2>⚙️ Advanced Settings</h2>
+          <span class="collapse-icon">▼</span>
+          <p>Optional settings for power users</p>
+        </div>
+        
+        <div class="section-content" id="advancedContent">
+          <!-- General Settings -->
+          <div class="setting-group">
+            <h3>General Settings</h3>
+            <label for="enableThoughtTracking">Enable Thought Tracking</label>
+            <div class="toggle-container">
+              <input type="checkbox" id="enableThoughtTracking" checked />
+              <span class="toggle-slider"></span>
+            </div>
+            <p class="setting-description">Track and analyze your typing patterns</p>
+
+            <label for="typingThreshold">Typing Threshold</label>
+            <input type="range" id="typingThreshold" min="10" max="500" value="100" />
+            <div class="range-value">
+              <span id="typingThresholdValue">100</span> characters
+            </div>
+            <p class="setting-description">Minimum characters before analysis triggers</p>
+
+            <label for="analysisDelay">Analysis Delay</label>
+            <input type="range" id="analysisDelay" min="100" max="2000" step="100" value="500" />
+            <div class="range-value">
+              <span id="analysisDelayValue">500</span> ms
+            </div>
+            <p class="setting-description">Delay before analyzing typed content</p>
+          </div>
+
+          <!-- Visual Settings -->
+          <div class="setting-group">
+            <h3>Visual Settings</h3>
+            <label for="enableVisualFeedback">Enable Visual Feedback</label>
+            <div class="toggle-container">
+              <input type="checkbox" id="enableVisualFeedback" checked />
+              <span class="toggle-slider"></span>
+            </div>
+            <p class="setting-description">Show visual indicators for thought activity</p>
+
+            <label for="enablePopupOverlay">Enable Popup Overlay</label>
+            <div class="toggle-container">
+              <input type="checkbox" id="enablePopupOverlay" checked />
+              <span class="toggle-slider"></span>
+            </div>
+            <p class="setting-description">Show popup overlay for thought capture</p>
+
+            <label for="enableCursorIndicators">Enable Cursor Indicators</label>
+            <div class="toggle-container">
+              <input type="checkbox" id="enableCursorIndicators" checked />
+              <span class="toggle-slider"></span>
+            </div>
+            <p class="setting-description">Show cursor proximity indicators</p>
+
+            <label for="indicatorStyle">Indicator Style</label>
+            <select id="indicatorStyle">
+              <option value="pulse">Pulse</option>
+              <option value="glow">Glow</option>
+              <option value="ripple">Ripple</option>
+              <option value="bounce">Bounce</option>
+            </select>
+            <p class="setting-description">Visual style for thought indicators</p>
+          </div>
+
+          <!-- Advanced Features -->
+          <div class="setting-group">
+            <h3>Advanced Features</h3>
+            <label for="enableRunOnDetection">Enable Run-on Detection</label>
+            <div class="toggle-container">
+              <input type="checkbox" id="enableRunOnDetection" />
+              <span class="toggle-slider"></span>
+            </div>
+            <p class="setting-description">Detect and flag run-on sentences</p>
+
+            <label for="runOnThreshold">Run-on Threshold</label>
+            <input type="range" id="runOnThreshold" min="0.1" max="1.0" step="0.1" value="0.7" />
+            <div class="range-value">
+              <span id="runOnThresholdValue">0.7</span>
+            </div>
+            <p class="setting-description">Threshold for detecting run-on sentences</p>
+
+            <label for="enableSoundFeedback">Enable Sound Feedback</label>
+            <div class="toggle-container">
+              <input type="checkbox" id="enableSoundFeedback" />
+              <span class="toggle-slider"></span>
+            </div>
+            <p class="setting-description">Play sounds for thought detection events</p>
+
+            <label for="soundVolume">Sound Volume</label>
+            <input type="range" id="soundVolume" min="0" max="100" value="50" />
+            <div class="range-value">
+              <span id="soundVolumeValue">50</span>
+            </div>
+            <p class="setting-description">Volume level for sound feedback</p>
+
+            <label for="enableDebugLogging">Enable Debug Logging</label>
+            <div class="toggle-container">
+              <input type="checkbox" id="enableDebugLogging" />
+              <span class="toggle-slider"></span>
+            </div>
+            <p class="setting-description">Enable detailed logging for debugging</p>
+          </div>
+
+          <!-- Security Settings -->
+          <div class="setting-group">
+            <h3>Security Settings</h3>
+            <label for="allowShortFormatFallback">Allow Short Format Fallback</label>
+            <div class="toggle-container">
+              <input type="checkbox" id="allowShortFormatFallback" checked />
+              <span class="toggle-slider"></span>
+            </div>
+            <p class="setting-description">Allow short format pairing codes as fallback when UUID format is requested but not available from backend</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="settings-footer">
+      <div class="footer-content">
+        <div class="version-info">
+          <span>Myl.Zip v2.0.0</span>
+        </div>
+        <div class="footer-actions">
+          <button type="button" id="exportSettings" class="btn-secondary">Export Settings</button>
+          <button type="button" id="importSettings" class="btn-secondary">Import Settings</button>
+          <button type="button" id="resetAllSettings" class="btn-danger">Reset All</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="settings.js"></script>
+</body>
+</html>
