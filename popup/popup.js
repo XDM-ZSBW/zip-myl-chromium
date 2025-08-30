@@ -50,7 +50,7 @@ class MylZipAuthPopup {
   async loadInitialData() {
     try {
       // Get device information from background script
-      const deviceInfo = await this.sendMessage('GET_DEVICE_INFO');
+      const deviceInfo = await this.sendMessage({ type: 'GET_DEVICE_INFO' });
       this.deviceId = deviceInfo.deviceId;
       this.isAuthenticated = deviceInfo.isAuthenticated;
       
@@ -65,7 +65,7 @@ class MylZipAuthPopup {
 
   async checkAuthenticationStatus() {
     try {
-      const response = await this.sendMessage('CHECK_AUTHENTICATION');
+      const response = await this.sendMessage({ type: 'CHECK_AUTHENTICATION' });
       this.isAuthenticated = response.isAuthenticated;
       this.updateUI();
     } catch (error) {
@@ -123,7 +123,7 @@ class MylZipAuthPopup {
   async verifyDevice() {
     try {
       // Get authentication URL from background script
-      const response = await this.sendMessage('GET_AUTHENTICATION_URL');
+      const response = await this.sendMessage({ type: 'GET_AUTHENTICATION_URL' });
       const authUrl = response.authUrl;
       
       // Open the authentication portal

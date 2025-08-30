@@ -12,7 +12,9 @@
   
   "host_permissions": [
     "https://myl.zip/*",
-    "https://api.myl.zip/*"
+    "https://*.myl.zip/*",
+    "https://api.myl.zip/*",
+    "https://zaido.org/*"
   ],
   
   "background": {
@@ -21,7 +23,7 @@
   
   "content_scripts": [
     {
-      "matches": ["https://myl.zip/*"],
+      "matches": ["https://myl.zip/*", "https://zaido.org/*"],
       "js": ["content-scripts/content.js"],
       "css": ["content-scripts/content.css"],
       "run_at": "document_end"

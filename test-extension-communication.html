@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Myl.Zip Extension Communication Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .primary { background-color: #007bff; color: white; }
+        .secondary { background-color: #6c757d; color: white; }
+    </style>
+</head>
+<body>
+    <h1>Myl.Zip Extension Communication Test</h1>
+    
+    <div id="status" class="status info">
+        Testing extension communication...
+    </div>
+    
+    <div id="results"></div>
+    
+    <button class="primary" onclick="testDeviceInfo()">Test Device Info</button>
+    <button class="secondary" onclick="testAuthentication()">Test Authentication</button>
+    <button class="secondary" onclick="checkExtensionStatus()">Check Extension Status</button>
+    
+    <script>
+        let deviceId = null;
+        let extensionStatus = 'unknown';
+        
+        // Listen for extension events
+        document.addEventListener('mylzip-device-ready', (event) => {
+            deviceId = event.detail.deviceId;
+            updateStatus('Extension device ready: ' + deviceId, 'success');
+        });
+        
+        // Check if extension is available
+        function checkExtensionStatus() {
+            if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id) {
+                extensionStatus = 'installed';
+                updateStatus('Extension is installed and available', 'success');
+            } else {
+                extensionStatus = 'not-installed';
+                updateStatus('Extension is not installed or not available', 'error');
+            }
+        }
+        
+        // Test device info communication
+        async function testDeviceInfo() {
+            try {
+                if (typeof chrome === 'undefined' || !chrome.runtime) {
+                    updateStatus('Chrome extension API not available', 'error');
+                    return;
+                }
+                
+                const response = await new Promise((resolve, reject) => {
+                    chrome.runtime.sendMessage({ type: 'GET_DEVICE_INFO' }, (response) => {
+                        if (chrome.runtime.lastError) {
+                            reject(new Error(chrome.runtime.lastError.message));
+                        } else {
+                            resolve(response);
+                        }
+                    });
+                });
+                
+                addResult('Device Info Test', 'success', response);
+            } catch (error) {
+                addResult('Device Info Test', 'error', error.message);
+            }
+        }
+        
+        // Test authentication communication
+        async function testAuthentication() {
+            try {
+                if (typeof chrome === 'undefined' || !chrome.runtime) {
+                    updateStatus('Chrome extension API not available', 'error');
+                    return;
+                }
+                
+                const response = await new Promise((resolve, reject) => {
+                    chrome.runtime.sendMessage({ type: 'CHECK_AUTHENTICATION' }, (response) => {
+                        if (chrome.runtime.lastError) {
+                            reject(new Error(chrome.runtime.lastError.message));
+                        } else {
+                            resolve(response);
+                        }
+                    });
+                });
+                
+                addResult('Authentication Test', 'success', response);
+            } catch (error) {
+                addResult('Authentication Test', 'error', error.message);
+            }
+        }
+        
+        function updateStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+        }
+        
+        function addResult(testName, type, data) {
+            const resultsDiv = document.getElementById('results');
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `status ${type}`;
+            resultDiv.innerHTML = `
+                <strong>${testName}:</strong> ${type === 'success' ? 'PASSED' : 'FAILED'}<br>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+            `;
+            resultsDiv.appendChild(resultDiv);
+        }
+        
+        // Auto-check extension status on load
+        window.addEventListener('load', () => {
+            setTimeout(checkExtensionStatus, 1000);
+        });
+    </script>
+</body>
+</html>

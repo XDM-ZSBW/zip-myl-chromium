@@ -35,15 +35,20 @@ class MylZipContentScript {
 
   isMylZipDomain() {
     const hostname = window.location.hostname;
-    return hostname === 'myl.zip' || hostname.endsWith('.myl.zip');
+    return hostname === 'myl.zip' || hostname === 'zaido.org' || hostname.endsWith('.myl.zip');
   }
 
   async loadDeviceId() {
     try {
-      const response = await this.sendMessage('GET_DEVICE_INFO');
+      // Wait a moment for background script to initialize
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      const response = await this.sendMessage({ type: 'GET_DEVICE_INFO' });
       this.deviceId = response.deviceId;
     } catch (error) {
       console.error('Error loading device ID:', error);
+      // Fallback: generate a temporary device ID
+      this.deviceId = `temp_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
     }
   }
 
@@ -119,7 +124,7 @@ class MylZipContentScript {
   async handleDeviceAuthentication(authData) {
     try {
       // Send authentication request to background script
-      const response = await this.sendMessage('CHECK_AUTHENTICATION');
+      const response = await this.sendMessage({ type: 'CHECK_AUTHENTICATION' });
       
       // Send response back to portal
       window.postMessage({
@@ -135,7 +140,7 @@ class MylZipContentScript {
   async handleSetupComplete(setupData) {
     try {
       // Notify background script of setup completion
-      await this.sendMessage('CHECK_AUTHENTICATION');
+      await this.sendMessage({ type: 'CHECK_AUTHENTICATION' });
       
       // Send confirmation to portal
       window.postMessage({
@@ -170,13 +175,23 @@ class MylZipContentScript {
 
   async sendMessage(message) {
     return new Promise((resolve, reject) => {
-      chrome.runtime.sendMessage(message, (response) => {
-        if (chrome.runtime.lastError) {
-          reject(new Error(chrome.runtime.lastError.message));
-        } else {
-          resolve(response);
-        }
-      });
+      // Add retry logic for service worker initialization
+      const sendWithRetry = (attempt = 1) => {
+        chrome.runtime.sendMessage(message, (response) => {
+          if (chrome.runtime.lastError) {
+            if (attempt < 3 && chrome.runtime.lastError.message.includes('Receiving end does not exist')) {
+              // Retry after a short delay for service worker initialization
+              setTimeout(() => sendWithRetry(attempt + 1), 500);
+            } else {
+              reject(new Error(chrome.runtime.lastError.message));
+            }
+          } else {
+            resolve(response);
+          }
+        });
+      };
+      
+      sendWithRetry();
     });
   }
 }
