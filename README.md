@@ -1,188 +1,106 @@
-# Myl.Zip - Intelligent Thought Assistant
+# Myl.Zip Authentication Chrome Extension
 
-A Chromium extension that implements intelligent typing-aware assistance with thought tracking, visual feedback, and contextual help across the web. Part of the Myl.Zip ecosystem.
+A **publicly private authentication service** that provides secure device verification and portal access for the Myl.Zip ecosystem.
 
-## 🚀 Features
+## Overview
 
-### Core Productivity Features
-- **Thought Tracking**: Monitors and saves your thoughts across web pages
-- **Visual Feedback**: Pulsing color indicators based on thought length (like Grammarly)
-- **Typing-Aware Service**: Real-time analysis of your typing patterns
-- **Contextual Assistance**: Smart popup overlays when you need help
+This Chrome extension serves as a **publicly private authentication service** - it's built on public, transparent infrastructure while keeping your personal data completely private. The extension enables secure device authentication through the Myl.Zip portal without storing sensitive information locally.
 
-### 🎯 Intelligent Assistance
-- **Real-time Input Analysis**: Monitors typing with configurable delay
-- **Contextual Triggers**: Detects when you need help based on keywords and patterns
-- **Run-on Thought Detection**: Identifies verbose writing and suggests breaks
-- **Cursor Proximity Indicators**: Visual feedback near your cursor
+## Key Features
 
-### 🎨 Visual Feedback System
-- **Pulsing Indicators**: Color-coded feedback based on thought length
-- **Attention-Grabbing Overlays**: Beautiful popup overlays for assistance
-- **Cursor Proximity**: Visual indicators for run-on thoughts
-- **Responsive Design**: Works across all screen sizes and themes
+- **🔐 Device Authentication**: Secure device ID generation and verification
+- **🌐 Portal Integration**: Seamless connection to the Myl.Zip authentication portal
+- **🛡️ Privacy-First**: Minimal data storage, no sensitive information retained locally
+- **⚡ Lightweight**: Fast, focused authentication without bloat
+- **🔍 Transparent**: Public infrastructure, private data
 
-### 🌐 Myl.Zip Integration
-- **Cloud Sync**: Synchronize thoughts with Myl.Zip cloud service
-- **Cross-Tab Sync**: Share thoughts across browser tabs
-- **Endpoint Integration**: Connect to Myl.Zip ecosystem
-- **Thought Persistence**: Save thoughts before switching endpoints
+## How It Works
 
-### 📡 Sensor Integration
-- **Mouse Tracking**: Enhanced attention detection through mouse movement
-- **Focus Tracking**: Monitor focus changes for better context
-- **Scroll Tracking**: Track scroll position for contextual assistance
-- **Multi-Modal Feedback**: Visual, audio, and haptic feedback options
+### Public Infrastructure
+- Authentication system built on public, verifiable infrastructure
+- Open protocols and standards
+- Transparent security practices
 
-## 🎮 Commands & Shortcuts
+### Private Data
+- Your device information stays on your device
+- No personal data transmitted without consent
+- Local storage only for essential authentication tokens
 
-| Command | Shortcut | Description |
-|---------|----------|-------------|
-| Toggle Typing Service | `Ctrl+Shift+Z` | Enable/disable intelligent assistance |
-| Quick Settings | `Ctrl+Shift+S` | Open quick settings panel |
-| Reset Counter | `Ctrl+Shift+R` | Reset thought counter |
-| Left Hand Action | `Ctrl+Shift+Z` | Quick breather space activation |
-| Right Hand Action | `Ctrl+Shift+M` | Focus mode activation |
+## Installation
 
-## ⚙️ Settings
+### Development Installation
 
-### General Settings
-- **Enable Assistant**: Master toggle for all functionality
-- **Typing Threshold**: Configure when high activity is detected
-- **Click Actions**: Allow extension icon interactions
-
-### Thought Tracking
-- **Enable Tracking**: Monitor thoughts across web pages
-- **Max Length**: Maximum characters per thought
-- **Persistence Duration**: How long to keep thoughts in memory
-
-### Visual Feedback
-- **Visual Indicators**: Show color-based feedback
-- **Popup Overlays**: Attention-grabbing assistance popups
-- **Sound Feedback**: Audio alerts for milestones
-- **Overlay Duration**: How long popups stay visible
-
-### Typing-Aware Service
-- **Enable Service**: Master toggle for intelligent assistance
-- **Analysis Delay**: Milliseconds before analyzing content
-- **Auto-Insert**: Automatically add suggestions to documents
-- **Trigger Keywords**: Customize assistance triggers
-
-### Run-on Thought Detection
-- **Enable Detection**: Detect verbose writing patterns
-- **Threshold**: Sensitivity level for detection
-- **Cursor Indicators**: Visual feedback near cursor
-- **Indicator Style**: Visual style (pulse, glow, ripple, bounce)
-
-### Myl.Zip Integration
-- **Cloud Sync**: Synchronize with Myl.Zip service
-- **Endpoint URL**: API endpoint for synchronization
-- **Cross-Tab Sync**: Share data across tabs
-
-### Sensor Integration
-- **Mouse Tracking**: Track mouse movement
-- **Focus Tracking**: Monitor focus changes
-- **Scroll Tracking**: Track scroll position
-- **Sensitivity**: Adjust sensor sensitivity
-
-## 🚀 Installation
-
-### From Source
 1. Clone this repository
-2. Open Chrome and go to `chrome://extensions/`
-3. Enable "Developer mode"
-4. Click "Load unpacked" and select the extension directory
-5. The extension will be installed and ready to use
+2. Open Chrome and navigate to `chrome://extensions/`
+3. Enable "Developer mode" (toggle in top right)
+4. Click "Load unpacked" and select this folder
+5. The extension will appear in your browser toolbar
 
-### From Chrome Web Store
-*Coming soon - extension will be published to Chrome Web Store*
+### Production Installation
 
-## 🔧 Development
+The extension will be available through the Chrome Web Store once published.
 
-### Prerequisites
-- Node.js 18+ (for building)
-- Chrome/Chromium browser
-- Git
+## Usage
 
-### Building
-```bash
-# Clone the repository
-git clone https://github.com/XDM-ZSBW/zip-myl-chromium.git
-cd zip-myl-chromium
+1. **First Time Setup**: Click the extension icon and follow the device verification process
+2. **Portal Access**: Visit `https://myl.zip` to access the authentication portal
+3. **Device Management**: Use the popup to manage your device authentication status
 
-# Install dependencies (if any)
-npm install
+## Architecture
 
-# Build the extension
-npm run build
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Chrome        │    │   Myl.Zip       │    │   Myl.Zip       │
+│   Extension     │◄──►│   Portal        │◄──►│   Backend API   │
+│   (Private)     │    │   (Public)      │    │   (Public)      │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
-### Testing
-```bash
-# Run tests
-npm test
+## Development
 
-# Lint code
-npm run lint
-
-# Format code
-npm run format
+### Project Structure
+```
+zip-myl-chromium/
+├── manifest.json           # Extension configuration
+├── background/             # Service worker
+│   └── background.js      # Authentication service
+├── popup/                  # Extension popup
+│   ├── popup.html         # Popup interface
+│   ├── popup.js           # Popup logic
+│   └── popup.css          # Popup styling
+├── content-scripts/       # Portal integration
+│   ├── content.js         # Content script
+│   └── content.css        # Content styling
+└── assets/                # Icons and resources
+    └── icons/
 ```
 
-## 📱 Browser Compatibility
+### Key Components
 
-- **Chrome**: Full support (primary target)
-- **Chromium**: Full support
-- **Edge**: Full support (Chromium-based)
-- **Opera**: Full support (Chromium-based)
-- **Brave**: Full support (Chromium-based)
+- **Background Service**: Handles device authentication and API communication
+- **Popup Interface**: Provides user-friendly device management
+- **Content Script**: Integrates with the Myl.Zip portal
+- **Storage**: Manages local device data securely
 
-## 🎨 Customization
+## Security
 
-The extension automatically adapts to:
-- **Light/Dark Themes**: Seamless integration with system themes
-- **High Contrast Mode**: Enhanced visibility for accessibility
-- **Reduced Motion**: Respects user motion preferences
-- **Responsive Design**: Works on all screen sizes
+- **Local Storage**: Device IDs stored locally only
+- **HTTPS Only**: All communication over secure connections
+- **Minimal Permissions**: Only requests necessary permissions
+- **No Tracking**: No analytics or tracking code
 
-## 🔒 Privacy & Security
+## Contributing
 
-- **Local Storage**: Thoughts stored locally by default
-- **Optional Cloud Sync**: Only syncs when explicitly enabled
-- **No Tracking**: No user behavior tracking or analytics
-- **Open Source**: Full source code available for review
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
 
-## 🤝 Contributing
+## License
 
-We welcome contributions! The extension is built with:
-- **Vanilla JavaScript**: No frameworks for maximum compatibility
-- **Modern CSS**: With accessibility and performance in mind
-- **Chrome Extensions API**: Following best practices
-
-### Development Guidelines
-1. Follow the existing code style
-2. Add tests for new features
-3. Update documentation
-4. Test across different browsers
-5. Ensure accessibility compliance
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🔗 Links
-
-- **GitHub**: [XDM-ZSBW/zip-myl-chromium](https://github.com/XDM-ZSBW/zip-myl-chromium)
-- **Author**: Yourl.Cloud Inc.
-- **Myl.Zip Ecosystem**: [myl.zip](https://myl.zip)
-- **Issues**: [GitHub Issues](https://github.com/XDM-ZSBW/zip-myl-chromium/issues)
-
-## 🆘 Support
-
-- **Documentation**: Check the [wiki](https://github.com/XDM-ZSBW/zip-myl-chromium/wiki)
-- **Issues**: Report bugs on [GitHub Issues](https://github.com/XDM-ZSBW/zip-myl-chromium/issues)
-- **Discussions**: Join the [GitHub Discussions](https://github.com/XDM-ZSBW/zip-myl-chromium/discussions)
+This project is licensed under the MIT License.
 
 ---
 
-*Transform your web browsing experience with intelligent thought assistance and attention-grabbing productivity tools.*
+**Note**: This extension is designed as a lightweight authentication client. For complex administrative features, please use the Myl.Zip portal directly.

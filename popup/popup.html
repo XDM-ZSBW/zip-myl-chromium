@@ -3,188 +3,64 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Myl.Zip - Thought Assistant</title>
+  <title>Myl.Zip Authentication</title>
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <div class="myl-zip-popup">
-    <!-- Header -->
-    <div class="myl-zip-header">
-      <div class="myl-zip-logo">
-        <div class="myl-zip-icon">🧠</div>
-        <div class="myl-zip-title">
-          <h1>Myl.Zip</h1>
-          <p>Thought Assistant</p>
+  <div class="popup-container">
+    <div class="popup-header">
+      <div class="logo">
+        <img src="../assets/icons/icon48.png" alt="Myl.Zip" class="logo-icon">
+        <h1 class="popup-title">Myl.Zip Authentication</h1>
+      </div>
+      <div class="status-indicator">
+        <div class="status-dot" id="statusDot"></div>
+        <span class="status-text" id="statusText">Checking...</span>
+      </div>
+    </div>
+
+    <div class="popup-main">
+      <div class="auth-info" id="authInfo">
+        <h2>Authentication Status</h2>
+        <div class="info-item">
+          <span class="info-label">Device ID:</span>
+          <span class="info-value" id="deviceId">Loading...</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Verification:</span>
+          <span class="info-value" id="authStatus">Checking...</span>
         </div>
       </div>
-      <div class="myl-zip-status" id="serviceStatus">
-        <span class="status-indicator" id="statusIndicator"></span>
-        <span class="status-text" id="statusText">Active</span>
-      </div>
-    </div>
 
-    <!-- Setup Progress Indicator -->
-    <div class="setup-progress" id="setupProgress">
-      <div class="progress-step active" data-step="1">
-        <span class="step-number">1</span>
-        <span class="step-label">Ready</span>
-      </div>
-      <div class="progress-step" data-step="2">
-        <span class="step-number">2</span>
-        <span class="step-label">Connected</span>
-      </div>
-      <div class="progress-step" data-step="3">
-        <span class="step-number">3</span>
-        <span class="step-label">Secure</span>
-      </div>
-      <div class="progress-step" data-step="4">
-        <span class="step-number">4</span>
-        <span class="step-label">Paired</span>
-      </div>
-    </div>
-
-    <!-- Current Status Summary -->
-    <div class="status-summary" id="statusSummary">
-      <div class="status-item">
-        <span class="status-icon">🔗</span>
-        <span class="status-text">Backend: <span id="backendStatus">Checking...</span></span>
-      </div>
-      <div class="status-item">
-        <span class="status-icon">🔒</span>
-        <span class="status-text">Security: <span id="securityStatus">Checking...</span></span>
-      </div>
-      <div class="status-item">
-        <span class="status-icon">📱</span>
-        <span class="status-text">Devices: <span id="deviceStatus">Checking...</span></span>
-      </div>
-    </div>
-
-    <!-- Current Thought Display -->
-    <div class="myl-zip-thought-section">
-      <h3>Current Thought</h3>
-      <div class="myl-zip-thought-display" id="currentThought">
-        <div class="thought-content" id="thoughtContent">No active thought</div>
-        <div class="thought-meta" id="thoughtMeta">
-          <span class="thought-length">0 chars</span>
-          <span class="thought-words">0 words</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Quick Stats -->
-    <div class="myl-zip-stats">
-      <div class="stat-item">
-        <div class="stat-value" id="typingCount">0</div>
-        <div class="stat-label">Keystrokes</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-value" id="sessionTime">0m</div>
-        <div class="stat-label">Session</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-value" id="thoughtCount">0</div>
-        <div class="stat-label">Thoughts</div>
-      </div>
-    </div>
-
-    <!-- Main Actions - Contextual Based on Setup Status -->
-    <div class="myl-zip-actions" id="mainActions">
-      <!-- Step 1: Initial Setup -->
-      <div class="action-step" id="step1Actions">
-        <h4>🚀 Get Started</h4>
-        <button class="myl-zip-btn myl-zip-btn-primary" id="setupWizard">
-          <span class="btn-icon">⚡</span>
-          <span class="btn-text">Setup Wizard</span>
-        </button>
-        <button class="myl-zip-btn myl-zip-btn-secondary" id="quickStart">
-          <span class="btn-icon">🚀</span>
-          <span class="btn-text">Quick Start</span>
-        </button>
-      </div>
-
-      <!-- Step 2: Backend Connection -->
-      <div class="action-step hidden" id="step2Actions">
-        <h4>🔗 Connect to Backend</h4>
-        <button class="myl-zip-btn myl-zip-btn-primary" id="testConnection">
-          <span class="btn-icon">🔍</span>
-          <span class="btn-text">Test Connection</span>
-        </button>
-        <button class="myl-zip-btn myl-zip-btn-secondary" id="configureBackend">
-          <span class="btn-icon">⚙️</span>
-          <span class="btn-text">Configure</span>
-        </button>
-      </div>
-
-      <!-- Step 3: Security Setup -->
-      <div class="action-step hidden" id="step3Actions">
-        <h4>🔒 Setup Security</h4>
-        <button class="myl-zip-btn myl-zip-btn-primary" id="setupEncryption">
+      <div class="actions">
+        <button class="btn btn-primary" id="setupBtn">
           <span class="btn-icon">🔐</span>
-          <span class="btn-text">Setup Encryption</span>
+          Verify Device
         </button>
-        <button class="myl-zip-btn myl-zip-btn-secondary" id="registerDevice">
-          <span class="btn-icon">📱</span>
-          <span class="btn-text">Register Device</span>
+        
+        <button class="btn btn-secondary" id="portalBtn">
+          <span class="btn-icon">🌐</span>
+          Access Portal
         </button>
-      </div>
-
-      <!-- Step 4: Device Pairing -->
-      <div class="action-step hidden" id="step4Actions">
-        <h4>📱 Connect Devices</h4>
-        <button class="myl-zip-btn myl-zip-btn-primary" id="pairDevice">
-          <span class="btn-icon">🔗</span>
-          <span class="btn-text">Pair New Device</span>
-        </button>
-        <button class="myl-zip-btn myl-zip-btn-secondary" id="manageDevices">
-          <span class="btn-icon">📋</span>
-          <span class="btn-text">Manage Devices</span>
-        </button>
-      </div>
-
-      <!-- All Steps Complete -->
-      <div class="action-step hidden" id="completeActions">
-        <h4>✅ All Set!</h4>
-        <button class="myl-zip-btn myl-zip-btn-primary" id="startUsing">
-          <span class="btn-icon">🎯</span>
-          <span class="btn-text">Start Using</span>
-        </button>
-        <button class="myl-zip-btn myl-zip-btn-secondary" id="openThoughts">
-          <span class="btn-icon">📝</span>
-          <span class="btn-text">View Thoughts</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Quick Access -->
-    <div class="quick-access">
-      <h4>Quick Access</h4>
-      <div class="quick-buttons">
-        <button class="myl-zip-btn myl-zip-btn-secondary" id="openSettings">
-          <span class="btn-icon">⚙️</span>
-          <span class="btn-text">Settings</span>
-        </button>
-        <button class="myl-zip-btn myl-zip-btn-secondary" id="openInputHistory">
-          <span class="btn-icon">🔍</span>
-          <span class="btn-text">History</span>
-        </button>
-        <button class="myl-zip-btn myl-zip-btn-secondary" id="toggleService">
+        
+        <button class="btn btn-secondary" id="refreshBtn">
           <span class="btn-icon">🔄</span>
-          <span class="btn-text">Toggle</span>
+          Refresh Status
         </button>
-        <button class="myl-zip-btn myl-zip-btn-secondary" id="openTrustNetwork">
-          <span class="btn-icon">🔒</span>
-          <span class="btn-text">Trust Network</span>
-        </button>
+      </div>
+
+      <div class="help-text">
+        <p>Myl.Zip provides privately public authentication for secure device verification.</p>
+        <p>Click "Verify Device" to authenticate with the Myl.Zip portal.</p>
       </div>
     </div>
 
-    <!-- Footer -->
-    <div class="myl-zip-footer">
-      <div class="footer-links">
-        <a href="#" id="helpLink" class="footer-link">Help</a>
-        <a href="#" id="aboutLink" class="footer-link">About</a>
+    <div class="popup-footer">
+      <div class="footer-info">
+        <span class="version">v2.0.0</span>
+        <span class="separator">•</span>
+        <a href="https://myl.zip/help" target="_blank" class="help-link">Help</a>
       </div>
-      <div class="footer-version">v2.0.0</div>
     </div>
   </div>
 

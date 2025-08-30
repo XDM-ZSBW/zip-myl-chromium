@@ -1,42 +1,28 @@
 {
   "manifest_version": 3,
-  "name": "Myl.Zip - Intelligent Thought Assistant",
+  "name": "Myl.Zip Authentication",
   "version": "2.0.0",
-  "description": "Intelligent typing-aware assistance with thought tracking, visual feedback, and contextual help across the web. Part of the Myl.Zip ecosystem.",
-  "author": "Yourl.Cloud Inc.",
-  "homepage_url": "https://github.com/XDM-ZSBW/zip-myl-chromium",
+  "description": "A publicly private authentication service for secure device verification and portal access",
+  "author": "Myl.Zip Team",
   
   "permissions": [
     "activeTab",
-    "storage",
-    "contextMenus",
-    "tabs",
-    "scripting",
-    "notifications"
+    "storage"
   ],
   
   "host_permissions": [
-    "<all_urls>",
-    "http://localhost:3000/*",
-    "https://*.run.app/*",
-    "https://api.myl.zip/*",
-    "https://myl.zip/*"
+    "https://myl.zip/*",
+    "https://api.myl.zip/*"
   ],
   
   "background": {
-    "service_worker": "background/background.js",
-    "type": "module"
+    "service_worker": "background/background.js"
   },
   
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": [
-        "utils/config.js",
-        "services/encryptionService.js",
-        "services/deviceManager.js",
-        "content-scripts/content.js"
-      ],
+      "matches": ["https://myl.zip/*"],
+      "js": ["content-scripts/content.js"],
       "css": ["content-scripts/content.css"],
       "run_at": "document_end"
     }
@@ -44,19 +30,7 @@
   
   "action": {
     "default_popup": "popup/popup.html",
-    "default_title": "Myl.Zip - Thought Assistant",
-    "default_icon": {
-      "16": "assets/icons/icon16.png",
-      "32": "assets/icons/icon32.png",
-      "48": "assets/icons/icon48.png",
-      "128": "assets/icons/icon128.png"
-    }
-  },
-
-  "options_page": "options/settings.html",
-  
-  "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self';"
+    "default_title": "Myl.Zip Authentication Service"
   },
   
   "icons": {
@@ -64,54 +38,5 @@
     "32": "assets/icons/icon32.png",
     "48": "assets/icons/icon48.png",
     "128": "assets/icons/icon128.png"
-  },
-  
-  "web_accessible_resources": [
-    {
-      "resources": [
-        "services/trustNetworkService.js",
-        "trust-network.html",
-        "trust-network.css",
-        "trust-network.js",
-        "trust-network-demo.html",
-        "trust-network-auth.html",
-        "trust-network-auth.js",
-        "content-scripts/content.css",
-        "assets/icons/*.png",
-        "encryption-setup.html",
-        "encryption-setup.js",
-        "thoughts.html",
-        "thoughts.css",
-        "thoughts.js",
-        "input-history.html",
-        "input-history.js",
-        "nftEngine.js",
-        "nft-pairing.html",
-        "nft-pairing.css",
-        "nft-pairing.js"
-      ],
-      "matches": ["<all_urls>"]
-    }
-  ],
-  
-  "commands": {
-    "toggle-typing-service": {
-      "suggested_key": {
-        "default": "Ctrl+Shift+Z"
-      },
-      "description": "Toggle Typing-Aware Service"
-    },
-    "quick-settings": {
-      "suggested_key": {
-        "default": "Ctrl+Shift+S"
-      },
-      "description": "Open Quick Settings"
-    },
-    "reset-thought-counter": {
-      "suggested_key": {
-        "default": "Ctrl+Shift+R"
-      },
-      "description": "Reset Thought Counter"
-    }
   }
 }
